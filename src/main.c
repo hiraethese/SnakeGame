@@ -22,22 +22,45 @@ int main() {
         printf("Use W/A/S/D to move (Q to quit)\n");
 
         char input = getchar();
+        // Q is pressed
         if (input == 'Q' || input == 'q') {
             break;
         }
 
         switch (input) {
+            // W is pressed
             case 'W': case 'w':
-                if (x > 0) x--;
+                if (x > 0) {
+                    x--;
+                } else {
+                    x = ROWS - 1;
+                }
                 break;
+            // A is pressed
             case 'A': case 'a':
-                if (y > 0) y--;
+                if (y > 0) {
+                    y--;
+                } else {
+                    y = COLS - 1;
+                }
                 break;
+            // S is pressed
             case 'S': case 's':
-                if (x < ROWS - 1) x++;
+                if (x < ROWS - 1) {
+                    x++;
+                } else {
+                    x = 0;
+                }
                 break;
+            // D is pressed
             case 'D': case 'd':
-                if (y < COLS - 1) y++;
+                if (y < COLS - 1) {
+                    y++;
+                } else {
+                    y = 0;
+                }
+                break;
+            default:
                 break;
         }
     }
