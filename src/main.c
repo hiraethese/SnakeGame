@@ -1,68 +1,37 @@
 #include "../include/snake.h"
+#include <stdio.h>
 
 int main() {
-    char grid[ROWS][COLS];
-    char symbol = '#';
-    int x = 0, y = 0;
+    signal(SIGINT, handle_signal);
+    signal(SIGTERM, handle_signal);
 
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            grid[i][j] = '.';
-        }
-    }
+    char grid[ROWS][COLS];
+    Snake snake;
+
+    init_snake(&snake);
 
     set_input_mode();
     atexit(restore_input_mode);
 
     while (1) {
-        grid[x][y] = symbol;
-        print_grid(grid);
-        grid[x][y] = '.';
+        clear_grid(grid);
 
+        for (int i = 0; i < snake.length; i++) {
+            grid[snake.body[i][0]][snake.body[i][1]] = '#';
+        }
+
+        print_grid(grid);
         printf("Use W/A/S/D to move (Q to quit)\n");
 
-        char input = getchar();
-        // Q is pressed
-        if (input == 'Q' || input == 'q') {
-            break;
+        char input;
+        if (read(STDIN_FILENO, &input, 1) == 1) {
+            if (input == 'Q' || input == 'q') {
+                break;
+            }
+            handle_input(&snake, input);
         }
 
-        switch (input) {
-            // W is pressed
-            case 'W': case 'w':
-                if (x > 0) {
-                    x--;
-                } else {
-                    x = ROWS - 1;
-                }
-                break;
-            // A is pressed
-            case 'A': case 'a':
-                if (y > 0) {
-                    y--;
-                } else {
-                    y = COLS - 1;
-                }
-                break;
-            // S is pressed
-            case 'S': case 's':
-                if (x < ROWS - 1) {
-                    x++;
-                } else {
-                    x = 0;
-                }
-                break;
-            // D is pressed
-            case 'D': case 'd':
-                if (y < COLS - 1) {
-                    y++;
-                } else {
-                    y = 0;
-                }
-                break;
-            default:
-                break;
-        }
+        update_snake(&snake);
     }
 
     return 0;
