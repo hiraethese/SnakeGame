@@ -42,5 +42,7 @@ void update_snake(Snake *snake);
 void handle_input(Snake *snake, char input);
 // Handle Cltr+C signal.
 void handle_signal();
+// Check if there's input ready from the user.
+int input_available();
 
 #endif // SNAKE_H

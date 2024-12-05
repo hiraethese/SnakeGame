@@ -23,8 +23,8 @@ int main() {
         print_grid(grid);
         printf("Use W/A/S/D to move (Q to quit)\n");
 
-        char input;
-        if (read(STDIN_FILENO, &input, 1) == 1) {
+        if (input_available()) {
+            char input = getchar();
             if (input == 'Q' || input == 'q') {
                 break;
             }
@@ -32,6 +32,8 @@ int main() {
         }
 
         update_snake(&snake);
+
+        usleep(100000);
     }
 
     return 0;
